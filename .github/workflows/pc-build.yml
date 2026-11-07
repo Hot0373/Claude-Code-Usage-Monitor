@@ -25,7 +25,10 @@ jobs:
         run: |
           $version = "2.24.${{ github.run_number }}"
           "APP_VERSION=$version" >> $env:GITHUB_ENV
-          (Get-Content Cargo.toml -Raw) -replace '(?m)^version = "[^"]+"', "version = `"$version`"" | Set-Content Cargo.toml -NoNewline
+          # 只改 [package] 里的第一处 version，别动依赖的版本号。
+          $toml = Get-Content Cargo.toml -Raw
+          $toml = ([regex]'(?m)^version = "[^"]+"').Replace($toml, "version = `"$version`"", 1)
+          Set-Content Cargo.toml $toml -NoNewline
           $lock = Get-Content Cargo.lock -Raw
           $lock = $lock -replace '(name = "claude-code-usage-monitor"\r?\nversion = )"[^"]+"', "`$1`"$version`""
           Set-Content Cargo.lock $lock -NoNewline
