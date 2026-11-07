@@ -1438,7 +1438,8 @@ fn now_unix_secs() -> u64 {
 }
 
 fn update_check_interval() -> Duration {
-    Duration::from_secs(24 * 60 * 60)
+    // 更新来自自己的 fork（Cargo.toml 的 repository），每小时看一次。
+    Duration::from_secs(60 * 60)
 }
 
 fn auto_update_check_due(last_update_check_unix: Option<u64>) -> bool {
@@ -1556,10 +1557,6 @@ fn update_language_change() -> bool {
 }
 
 fn begin_update_check(hwnd: HWND, interactive: bool) {
-    // 这是改过的版本：不自动检查更新，否则会被原版覆盖。
-    if !interactive {
-        return;
-    }
     let send_hwnd = SendHwnd::from_hwnd(controller_for(hwnd));
     let (strings, install_channel) = {
         let mut state = lock_state();
@@ -1622,6 +1619,9 @@ fn begin_update_check(hwnd: HWND, interactive: bool) {
                 }
                 save_state_settings();
                 if interactive && show_update_prompt(hwnd, strings, &update) {
+                    begin_update_install(hwnd, update);
+                } else if !interactive && matches!(update, AvailableUpdate::Release(_)) {
+                    // 自动检查发现新版本：直接在后台下载、校验并替换，然后自动重启。
                     begin_update_install(hwnd, update);
                 }
                 // Keep the dashboard busy until the install prompt is dismissed.
