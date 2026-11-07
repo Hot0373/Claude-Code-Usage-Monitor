@@ -48,9 +48,9 @@ pub struct SettingsFile {
     pub language: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_update_check_unix: Option<u64>,
-    #[serde(default = "default_true")]
-    show_claude_code: bool,
     #[serde(default)]
+    show_claude_code: bool,
+    #[serde(default = "default_true")]
     show_codex: bool,
     #[serde(default)]
     show_antigravity: bool,
