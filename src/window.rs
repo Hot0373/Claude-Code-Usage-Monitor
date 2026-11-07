@@ -1556,6 +1556,10 @@ fn update_language_change() -> bool {
 }
 
 fn begin_update_check(hwnd: HWND, interactive: bool) {
+    // 这是改过的版本：不自动检查更新，否则会被原版覆盖。
+    if !interactive {
+        return;
+    }
     let send_hwnd = SendHwnd::from_hwnd(controller_for(hwnd));
     let (strings, install_channel) = {
         let mut state = lock_state();

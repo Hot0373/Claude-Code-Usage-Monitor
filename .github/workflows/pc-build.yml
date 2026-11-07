@@ -1,0 +1,46 @@
+name: PC Monitor Build
+
+on:
+  push:
+    branches: [pc-monitor]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Keep in sync with rust-toolchain.toml.
+      - uses: dtolnay/rust-toolchain@1.95.0
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Test local metrics and theme
+        run: cargo test --locked pc_monitor
+
+      - name: Build release binary
+        run: cargo build --release --locked
+
+      - name: Rename binary
+        shell: pwsh
+        run: Copy-Item target/release/claude-code-usage-monitor.exe pc-agent-monitor.exe
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pc-agent-monitor
+          path: pc-agent-monitor.exe
+
+      - name: Publish download
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: pc-build-${{ github.run_number }}
+          name: 本机 AI 监控（构建 ${{ github.run_number }}）
+          prerelease: true
+          files: pc-agent-monitor.exe
+          body: |
+            下载 pc-agent-monitor.exe，直接双击运行。
+            第一次运行 Windows 可能提示"已保护你的电脑"：点"更多信息"→"仍要运行"（这个程序没有代码签名）。

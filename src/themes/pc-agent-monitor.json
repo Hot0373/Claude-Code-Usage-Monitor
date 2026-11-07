@@ -1,0 +1,988 @@
+{
+  "schema_version": 1,
+  "id": "pc-agent-monitor",
+  "name": "本机 AI 监控",
+  "surfaces": [
+    {
+      "id": "main",
+      "name": "本机 AI 监控",
+      "tooltip": "usage_summary",
+      "placement": {
+        "reference": {
+          "region": "system_tray",
+          "display": 0
+        },
+        "nest": "taskbar",
+        "horizontal": "left",
+        "vertical": "bottom",
+        "surface_horizontal": "right",
+        "surface_vertical": "bottom",
+        "offset_x": 0,
+        "offset_y": 0
+      },
+      "width": "436 + pc.comfy.active * 106",
+      "height": "46",
+      "mouse_events": {
+        "right_click": "show_context_menu(\"classic-v1\")"
+      },
+      "children": [
+        {
+          "id": "divider-dark-left",
+          "name": "Dark divider left",
+          "render": "system.dark",
+          "y": "10",
+          "width": "2",
+          "height": "25",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#505050FF"
+            }
+          }
+        },
+        {
+          "id": "divider-dark-right",
+          "name": "Dark divider right",
+          "render": "system.dark",
+          "x": "2",
+          "y": "10",
+          "width": "1",
+          "height": "25",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#282828FF"
+            }
+          }
+        },
+        {
+          "id": "divider-light-left",
+          "name": "Light divider left",
+          "render": "1 - system.dark",
+          "y": "10",
+          "width": "2",
+          "height": "25",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#A0A0A0FF"
+            }
+          }
+        },
+        {
+          "id": "divider-light-right",
+          "name": "Light divider right",
+          "render": "1 - system.dark",
+          "x": "2",
+          "y": "10",
+          "width": "1",
+          "height": "25",
+          "background": {
+            "type": "colour",
+            "colour": {
+              "color": "#E6E6E6FF"
+            }
+          }
+        },
+        {
+          "id": "codex-name-dark",
+          "name": "dark codex name",
+          "render": "(system.dark)",
+          "x": "12",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "Codex",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#A8A8A8FF"
+            }
+          }
+        },
+        {
+          "id": "codex-value-dark",
+          "name": "dark codex value",
+          "render": "(system.dark) && (codex.five_hour.available)",
+          "x": "58",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{codex.five_hour.display:0}%",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "codex-value-na-dark",
+          "name": "dark codex no value",
+          "render": "(system.dark) && (!codex.five_hour.available)",
+          "x": "58",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "--",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "codex-bar-dark",
+          "name": "dark codex bar",
+          "render": "(system.dark)",
+          "x": "12",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "codex.five_hour.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F5F5F5FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "codex-name-light",
+          "name": "light codex name",
+          "render": "((1 - system.dark))",
+          "x": "12",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "Codex",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#5A5A5AFF"
+            }
+          }
+        },
+        {
+          "id": "codex-value-light",
+          "name": "light codex value",
+          "render": "((1 - system.dark)) && (codex.five_hour.available)",
+          "x": "58",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{codex.five_hour.display:0}%",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "codex-value-na-light",
+          "name": "light codex no value",
+          "render": "((1 - system.dark)) && (!codex.five_hour.available)",
+          "x": "58",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "--",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "codex-bar-light",
+          "name": "light codex bar",
+          "render": "((1 - system.dark))",
+          "x": "12",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "codex.five_hour.display",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#1F1F1FFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "llm-name-dark",
+          "name": "dark llm name",
+          "render": "(system.dark)",
+          "x": "118",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.llm.name}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#A8A8A8FF"
+            }
+          }
+        },
+        {
+          "id": "llm-value-dark",
+          "name": "dark llm value",
+          "render": "(system.dark)",
+          "x": "164",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.llm.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "llm-bar-dark",
+          "name": "dark llm bar",
+          "render": "(system.dark)",
+          "x": "118",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.gpu.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F5F5F5FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "llm-name-light",
+          "name": "light llm name",
+          "render": "((1 - system.dark))",
+          "x": "118",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.llm.name}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#5A5A5AFF"
+            }
+          }
+        },
+        {
+          "id": "llm-value-light",
+          "name": "light llm value",
+          "render": "((1 - system.dark))",
+          "x": "164",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.llm.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "llm-bar-light",
+          "name": "light llm bar",
+          "render": "((1 - system.dark))",
+          "x": "118",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.gpu.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#1F1F1FFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-name-dark",
+          "name": "dark mem name",
+          "render": "(system.dark)",
+          "x": "224",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "内存",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#A8A8A8FF"
+            }
+          }
+        },
+        {
+          "id": "mem-value-dark",
+          "name": "dark mem value",
+          "render": "(system.dark)",
+          "x": "270",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.mem.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "mem-bar-dark",
+          "name": "dark mem bar",
+          "render": "(system.dark) && (pc.mem.level < 1)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F5F5F5FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-bar-warn-dark",
+          "name": "dark mem bar warning",
+          "render": "(system.dark) && (pc.mem.level == 1)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F0A020FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-bar-crit-dark",
+          "name": "dark mem bar critical",
+          "render": "(system.dark) && (pc.mem.level >= 2)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#E5484DFF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-name-light",
+          "name": "light mem name",
+          "render": "((1 - system.dark))",
+          "x": "224",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "内存",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#5A5A5AFF"
+            }
+          }
+        },
+        {
+          "id": "mem-value-light",
+          "name": "light mem value",
+          "render": "((1 - system.dark))",
+          "x": "270",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.mem.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "mem-bar-light",
+          "name": "light mem bar",
+          "render": "((1 - system.dark)) && (pc.mem.level < 1)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#1F1F1FFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-bar-warn-light",
+          "name": "light mem bar warning",
+          "render": "((1 - system.dark)) && (pc.mem.level == 1)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F0A020FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "mem-bar-crit-light",
+          "name": "light mem bar critical",
+          "render": "((1 - system.dark)) && (pc.mem.level >= 2)",
+          "x": "224",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.mem.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#E5484DFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-name-dark",
+          "name": "dark power name",
+          "render": "(system.dark)",
+          "x": "330",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "功耗",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#A8A8A8FF"
+            }
+          }
+        },
+        {
+          "id": "power-value-dark",
+          "name": "dark power value",
+          "render": "(system.dark)",
+          "x": "376",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.power.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "power-bar-dark",
+          "name": "dark power bar",
+          "render": "(system.dark) && (pc.power.level < 1)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F5F5F5FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-bar-warn-dark",
+          "name": "dark power bar warning",
+          "render": "(system.dark) && (pc.power.level == 1)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F0A020FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-bar-crit-dark",
+          "name": "dark power bar critical",
+          "render": "(system.dark) && (pc.power.level >= 2)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#E5484DFF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-name-light",
+          "name": "light power name",
+          "render": "((1 - system.dark))",
+          "x": "330",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "功耗",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#5A5A5AFF"
+            }
+          }
+        },
+        {
+          "id": "power-value-light",
+          "name": "light power value",
+          "render": "((1 - system.dark))",
+          "x": "376",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.power.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "power-bar-light",
+          "name": "light power bar",
+          "render": "((1 - system.dark)) && (pc.power.level < 1)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#1F1F1FFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-bar-warn-light",
+          "name": "light power bar warning",
+          "render": "((1 - system.dark)) && (pc.power.level == 1)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F0A020FF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "power-bar-crit-light",
+          "name": "light power bar critical",
+          "render": "((1 - system.dark)) && (pc.power.level >= 2)",
+          "x": "330",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.power.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#E5484DFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "comfy-name-dark",
+          "name": "dark comfy name",
+          "render": "(system.dark) && (pc.comfy.active)",
+          "x": "436",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "ComfyUI",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#A8A8A8FF"
+            }
+          }
+        },
+        {
+          "id": "comfy-value-dark",
+          "name": "dark comfy value",
+          "render": "(system.dark) && (pc.comfy.active)",
+          "x": "482",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.comfy.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#F5F5F5FF"
+            }
+          }
+        },
+        {
+          "id": "comfy-bar-dark",
+          "name": "dark comfy bar",
+          "render": "(system.dark) && (pc.comfy.active)",
+          "x": "436",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.gpu.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#F5F5F5FF"
+            },
+            "track": {
+              "color": "#444444FF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        },
+        {
+          "id": "comfy-name-light",
+          "name": "light comfy name",
+          "render": "((1 - system.dark)) && (pc.comfy.active)",
+          "x": "436",
+          "y": "4",
+          "width": "46",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "ComfyUI",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "medium",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "left",
+            "color": {
+              "color": "#5A5A5AFF"
+            }
+          }
+        },
+        {
+          "id": "comfy-value-light",
+          "name": "light comfy value",
+          "render": "((1 - system.dark)) && (pc.comfy.active)",
+          "x": "482",
+          "y": "4",
+          "width": "50",
+          "height": "17",
+          "content": {
+            "type": "text",
+            "template": "{pc.comfy.text}",
+            "font_family": "Microsoft YaHei UI",
+            "font_size": "12",
+            "weight": "semibold",
+            "rendering": "clear_type",
+            "contrast": "1",
+            "align": "right",
+            "color": {
+              "color": "#1F1F1FFF"
+            }
+          }
+        },
+        {
+          "id": "comfy-bar-light",
+          "name": "light comfy bar",
+          "render": "((1 - system.dark)) && (pc.comfy.active)",
+          "x": "436",
+          "y": "27",
+          "width": "96",
+          "height": "12",
+          "content": {
+            "type": "progress",
+            "value": "pc.gpu.percentage",
+            "direction": "left_to_right",
+            "fill": {
+              "color": "#1F1F1FFF"
+            },
+            "track": {
+              "color": "#AAAAAAFF"
+            },
+            "corner_radius": "2",
+            "segments": 10,
+            "segment_gap": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

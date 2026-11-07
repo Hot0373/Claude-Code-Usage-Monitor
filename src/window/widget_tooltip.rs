@@ -91,7 +91,7 @@ fn content(owner: HWND) -> Option<(String, bool, HWND)> {
         state.providers,
         state.language,
     );
-    let text = if !errors.is_empty() {
+    let mut text = if !errors.is_empty() {
         errors.join("\n")
     } else if let Some(data) = state.data.as_ref().filter(|_| state.last_poll_ok) {
         usage_summary_lines(
@@ -107,6 +107,13 @@ fn content(owner: HWND) -> Option<(String, bool, HWND)> {
     } else {
         String::new()
     };
+    let local = crate::local_metrics::summary_lines();
+    if !local.is_empty() {
+        if !text.is_empty() {
+            text.push('\n');
+        }
+        text.push_str(&local.join("\n"));
+    }
     Some((
         if text.is_empty() {
             state.language.strings().window_title.to_string()

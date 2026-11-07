@@ -42,7 +42,7 @@ pub const PROVIDER_DESCRIPTORS: [ProviderDescriptor; 7] = [
         display_name: "Claude Code",
         settings_description: "Collect usage from Anthropic",
         native_menu_command_id: 60,
-        default_enabled: true,
+        default_enabled: false,
     },
     ProviderDescriptor {
         id: ProviderId::Codex,
@@ -51,7 +51,7 @@ pub const PROVIDER_DESCRIPTORS: [ProviderDescriptor; 7] = [
         display_name: "Codex",
         settings_description: "Collect usage from OpenAI",
         native_menu_command_id: 61,
-        default_enabled: false,
+        default_enabled: true,
     },
     ProviderDescriptor {
         id: ProviderId::Antigravity,

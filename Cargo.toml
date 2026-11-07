@@ -61,6 +61,11 @@ features = [
     "Win32_Graphics_Dxgi",
     "Win32_Graphics_Dxgi_Common",
     "Win32_Storage_FileSystem",
+    # 本机指标：PDH 性能计数器、内存、电源、进程列表
+    "Win32_System_Performance",
+    "Win32_System_SystemInformation",
+    "Win32_System_Power",
+    "Win32_System_Diagnostics_ToolHelp",
 ]
 
 [dev-dependencies]

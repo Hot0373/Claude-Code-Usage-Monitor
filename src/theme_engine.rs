@@ -23,6 +23,8 @@ pub const CLASSIC_THEME_ID: &str = "classic-usage-widget";
 pub const COMPACT_FLUENT_QUAD_THEME_ID: &str = "compact-fluent-quad";
 pub const CLASSIC_VERTICAL_THEME_ID: &str = "classic-vertical";
 pub const MINECRAFT_THEME_ID: &str = "theme-minecraft";
+/// 本机 AI 监控：Codex 限额、本地模型、内存、功耗。新安装默认使用它。
+pub const PC_MONITOR_THEME_ID: &str = "pc-agent-monitor";
 
 const BUILTIN_THEME_SOURCES: &[(&str, &str)] = &[
     (
@@ -36,6 +38,10 @@ const BUILTIN_THEME_SOURCES: &[(&str, &str)] = &[
     (
         CLASSIC_VERTICAL_THEME_ID,
         include_str!(concat!(env!("OUT_DIR"), "/classic-vertical.json")),
+    ),
+    (
+        PC_MONITOR_THEME_ID,
+        include_str!(concat!(env!("OUT_DIR"), "/pc-agent-monitor.json")),
     ),
 ];
 
@@ -1516,6 +1522,7 @@ impl DataContext {
             (!runtime.poll_ok && !runtime.has_error) as u8 as f64,
         );
         let strings = runtime.language.strings();
+        crate::local_metrics::insert_into(&mut context);
         context.insert_string("i18n.locale", runtime.language.code());
         context.insert_string("i18n.session_window", strings.session_window);
         context.insert_string("i18n.weekly_window", strings.weekly_window);
@@ -2558,6 +2565,10 @@ impl ThemeDocument {
 
 fn current_time_refresh_interval_for(value: &impl Serialize) -> Option<Duration> {
     let source = serde_json::to_string(value).ok()?.to_ascii_lowercase();
+    if source.contains("{pc.") || source.contains("\"pc.") {
+        crate::local_metrics::ensure_started();
+        return Some(Duration::from_secs(2));
+    }
     let uses_clock =
         source.contains("time.now") || source.contains("time.local") || source.contains("time.utc");
     if !uses_clock {

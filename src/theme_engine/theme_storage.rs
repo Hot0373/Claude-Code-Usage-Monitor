@@ -320,7 +320,7 @@ pub fn ensure_starter_theme() -> Result<PathBuf, String> {
             Err(error) => return Err(error.to_string()),
         }
     }
-    Ok(directory.join(format!("{CLASSIC_THEME_ID}.json")))
+    Ok(directory.join(format!("{PC_MONITOR_THEME_ID}.json")))
 }
 
 pub(super) fn ensure_bundled_editable_themes(
