@@ -48,7 +48,7 @@ pub struct SettingsFile {
     pub language: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub last_update_check_unix: Option<u64>,
-    #[serde(default)]
+    #[serde(default = "default_true")]
     show_claude_code: bool,
     #[serde(default = "default_true")]
     show_codex: bool,
@@ -131,7 +131,7 @@ impl Default for SettingsFile {
             poll_interval_ms: default_poll_interval(),
             language: None,
             last_update_check_unix: None,
-            show_claude_code: false,
+            show_claude_code: true,
             show_codex: true,
             show_antigravity: false,
             show_antigravity_gemini: None,
